@@ -10,7 +10,10 @@ import java.io.InputStreamReader;
 
 import util.TextModifier;
 
-/** just to automate the process of reading socket all over the program.*/
+/**
+	just to automate the process of reading socket all over the program.
+	you better consider this class a Socket, as it's just a wrapper for easier interactions...
+*/
 public class SocketRW{
 
 	private Socket soc;
@@ -25,9 +28,7 @@ public class SocketRW{
 		this.tm=tm;
 	}
 
-	public void setTextModifier(TextModifier tm){
-		this.tm=tm;
-	}
+	public void setTextModifier(TextModifier tm){this.tm=tm;}
 
 	public String readLine() throws IOException{
 		if(br==null)
@@ -41,6 +42,8 @@ public class SocketRW{
 			return;
 		if(bw==null)
 			bw=new BufferedWriter( new OutputStreamWriter(this.soc.getOutputStream()));
+		if(this.tm!=null)
+			s=tm.modify(s);
 		bw.write(s+"\n");
 		bw.flush();
 	}
