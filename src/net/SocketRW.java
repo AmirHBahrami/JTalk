@@ -18,7 +18,7 @@ public class SocketRW{
 	public SocketRW(Socket soc){
 		this.soc=soc;
 	}
-
+	
 	public String readLine() throws IOException{
 		if(br==null)
 			br=new BufferedReader(new InputStreamReader(this.soc.getInputStream()));
@@ -26,6 +26,7 @@ public class SocketRW{
 		return s;
 	}
 
+	@Deprecated
 	public String readAll() throws IOException{
 		if(br==null)
 			br=new BufferedReader(new InputStreamReader(this.soc.getInputStream()));

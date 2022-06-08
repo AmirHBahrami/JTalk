@@ -1,4 +1,4 @@
 #!/bin/bash
 ./compile.sh
-java -classpath bin Main -p 2022 --username AmirHBahrami
+java -classpath bin Main listen --username AmirHBahrami 
 echo "[FIN]"
