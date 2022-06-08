@@ -1,6 +1,7 @@
 package net;
 
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import java.io.IOException;
 
@@ -14,9 +15,9 @@ public class SSocRunnable implements Runnable{
 		this.consumer=consumer;
 	}
 
+	/* ONE TIME THING: if u need a loop, put it in the SocConsumer object */
 	@Override
 	public void run(){
-		Thread curr=Thread.currentThread();
 		ServerSocket ss=null;
 		try{
 			ss=new ServerSocket(port);

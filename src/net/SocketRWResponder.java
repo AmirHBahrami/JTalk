@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 	this runnable reads commands and input, exceutes commands
 	and writes the input into the client's socket.
 */
+@Deprecated
 public class SocketRWResponder implements Runnable{
 
 	private SocketRW srw;

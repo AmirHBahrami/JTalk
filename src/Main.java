@@ -13,6 +13,12 @@ import java.util.Map;
 import java.util.HashMap;
 // import java.util.Iterator;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import concurrent.ConcurrentSocketWriter;
+import concurrent.ConcurrentConsoleReader;
+
 // my stratedy about comments: don't go down the rabit hole, don't comment
 // unless you have sth important to say
 
@@ -29,6 +35,7 @@ import java.util.HashMap;
 // TODO play sounds when typing or receving message (disable with a flag)
 // TODO add config file for all the flags and deafult port and all...
 // TODO attend System.exit(1)'s
+// TODO replace System.err... with a propper logging system
 public class Main{
 
 	public static void main(String[] args){
@@ -70,9 +77,9 @@ public class Main{
 	}
 
 	public static void connect(String host,int port,String username){
+		/*
 		try{
-			SocketRWResponder srwr=new SocketRWResponder(new SocketRW(new Socket(host,port)));
-			srwr.setUsername(username);
+			BlockingQueue<String> inputFeed=new BlockingQueue<String>();
 			System.out.println("connecting to "+host+":port");
 			srwr.run(); // has a while loop AND a try catch
 		}catch(IOException ioe){
@@ -80,7 +87,7 @@ public class Main{
 			// this catch block only deals with "new Socket" statement
 			System.err.println("[connect] - IOException : "+ioe.getMessage());
 			System.exit(1);
-		}
+		}*/
 	}
 
 	/**
@@ -91,13 +98,20 @@ public class Main{
 	public static void listen(int port,String username){
 
 		SSocRunnable ssr=new SSocRunnable(port,(socket)->{
-			SocketRWResponder srwr=new SocketRWResponder(new SocketRW(socket));
-			srwr.setUsername(username);
-			srwr.run(); // has a while loop
+			SocketRW srw=new SocketRW(socket); // wrapps the socket made by listening
+			BlockingQueue<String> inputFeed = new LinkedBlockingQueue<String>();
+			Thread tReader=new Thread(new ConcurrentConsoleReader(inputFeed));
+			Thread tWriter=new Thread(new ConcurrentSocketWriter(inputFeed,srw));
+
+			tReader.start();
+			tWriter.start();
+
+			System.out.println("Threads started...");
 		});
+		/**/
 
 		System.out.println("listening on port "+port+"...");
-		ssr.run(); // TODO multithreading
+		ssr.run();
 	}
 
 
